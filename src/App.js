@@ -4,10 +4,8 @@ import Member from './Members';
 import MemberForm from './MemberForm';
 
 const initialFormValues = {
-  //TEXT INPUTS
-  username: '',
+  name: '',
   email: '',
-  //DROPDOWN
   role: '',
 }
 
@@ -23,16 +21,18 @@ function App() {
 
   const submitForm = () => {
     const newMember = {
-      username: formValues.username.trim(),
-      email: formValues.email.trim(),
+      name: formValues.name,
+      email: formValues.email,
       role: formValues.role
     }
 
-    if (!newMember.username || !newMember.email || !newMember.role) {
+    if (!newMember.name || !newMember.email || !newMember.role) {
       setErrorText("You have to fill out all fields in the form before submitting.");
       return;
+    } else {
+      setMembers([...members, newMember]);
+      setFormValues(initialFormValues);
     }
-
   }
 
   return (
@@ -44,9 +44,15 @@ function App() {
       update={updateForm}
       submit={submitForm}
       errorText={errorText}
-      ></MemberForm>
-
-
+      />
+      <div>
+      {members.map(members => {
+        return (
+          <Member key={members.role} details={members}/>
+        )
+      }
+      )}
+      </div>
     </div>
   );
 }
